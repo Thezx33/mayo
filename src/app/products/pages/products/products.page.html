@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>products</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="8">
+          <ion-grid>
+            <ion-row> <!-- Encabezados -->
+              <ion-col size="2" class="ion-text-center"><h6>Nombre</h6></ion-col>
+              <ion-col size="2" class="ion-text-center"><h6>Precio</h6></ion-col>
+              <ion-col size="2" class="ion-text-center"><h6>Cantidad</h6></ion-col>
+              <ion-col size="2" class="ion-text-center"><h6>Categoría</h6></ion-col>
+              <ion-col size="2" class="ion-text-center"><h6>Proveedor</h6></ion-col>
+            </ion-row> <!-- Fin de los encabezados-->
+            <ion-row *ngFor="let product of allProducts"> <!-- Fila a repetir -->
+              <ion-col size="2" class="ion-text-center">{{ product.name }}</ion-col>
+              <ion-col size="2" class="ion-text-center">{{ product.unitPrice }}</ion-col>
+              <ion-col size="2" class="ion-text-center">{{ product.stock }}</ion-col>
+              <ion-col size="2" class="ion-text-center">{{ product.category }}</ion-col>
+              <ion-col size="2" class="ion-text-center">{{ product.provider }}</ion-col>
+              <ion-col size="2">
+                <ion-button (click)="fillFormToUpdate( product )">
+                  <ion-icon slot="icon-only" name="sync-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="danger" (click)="onDelete( product.id)">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row> <!-- Fin de la fila a repetir-->
+          </ion-grid>
+        </ion-col> <!-- Fin de la columna de 8-->
+        <ion-col size="4"> <!-- Columna del formulario-->
+          <form (ngSubmit)="onAdd()" [formGroup]="form" >
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input type="text" formControlName="name"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Código:</ion-label>
+              <ion-input type="text" formControlName="barCode"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Precio</ion-label>
+              <ion-input type="number" formControlName="unitPrice"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Cantidad</ion-label>
+              <ion-input type="number" formControlName="stock"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Categoría</ion-label>
+              <ion-select placeholder="Seleccione uno" interface="popover" formControlName="category">
+                  <ion-select-option [value]="item.name" *ngFor="let item of categorias">{{ item.name }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Proveedor</ion-label>
+              <ion-select placeholder="Seleccione uno" interface="popover" formControlName="provider">
+                  <ion-select-option [value]="item.name" *ngFor="let item of categorias">{{ item.name }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <div class="buttons">
+              <ion-button class="ion-margin-top" fill="outline" type="button" color="danger" (click)="cancel()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Cancelar
+              </ion-button>
+
+              <ion-button class="ion-margin-top" fill="outline" type="submit" *ngIf=" isUpdating " (click)="onUpdate()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Actualizar
+              </ion-button>
+
+              <ion-button class="ion-margin-top" fill="outline" type="submit" *ngIf=" !isUpdating ">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Guardar
+              </ion-button>
+  
+            </div>
+          </form>
+        </ion-col> <!-- Fin de la columna del formulario-->
+      </ion-row> <!-- Fin de la fila principal -->
+    </ion-grid>
+</ion-content>

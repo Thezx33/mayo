@@ -1,0 +1,45 @@
+<ion-menu-toggle>
+  <ion-menu side="start"
+            menuId="first"
+            contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item routerLink="">
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-item>
+        <ion-item  routerLink="">
+          <ion-icon slot="start" name="cash-outline"></ion-icon>
+          <ion-label>Ventas</ion-label>
+        </ion-item>
+        <ion-item  routerLink="/products">
+          <ion-icon slot="start" name="cart-outline"></ion-icon>
+          <ion-label>Productos</ion-label>
+        </ion-item>
+        <ion-item  routerLink="">
+          <ion-icon slot="start" name="newspaper-outline"></ion-icon>
+          <ion-label>Reportes</ion-label>
+        </ion-item>
+        <ion-item  routerLink="">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-label>Usuarios</ion-label>
+        </ion-item>
+        <ion-item  routerLink="">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-label>Otros recursos</ion-label>
+        </ion-item>
+  
+        <ion-item-divider></ion-item-divider>
+        
+        <ion-item>
+          <ion-label class="ion-text-center">Nombre del usuario</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+</ion-menu-toggle>

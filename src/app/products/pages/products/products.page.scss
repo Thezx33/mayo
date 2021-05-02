@@ -1,0 +1,15 @@
+ion-row {
+    border-bottom: 1px solid black;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    // align-items: flex-end;
+
+    div.buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+}
