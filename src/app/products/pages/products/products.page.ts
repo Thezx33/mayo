@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductsService } from '../../services/products.service';
 import { Observable } from 'rxjs';
 import { Products } from '../../interface/products-interface';
+import { MenuController } from '@ionic/angular';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products',
@@ -20,41 +22,68 @@ export class ProductsPage implements OnInit {
 
   categorias = [
     {
-      name: 'qweqweqwe'
+      name: 'Pastillas'
     },
     {
-      name: 'asdasdasd'
+      name: 'Hierbas'
     },
     {
-      name: 'zxczxczxc'
+      name: 'Esotericos'
     }
   ]
 
   constructor(private formBuilder: FormBuilder,
-              private productsService: ProductsService ) {
-        this.products = productsService.getAllProducts();
-        this.products.subscribe( products => {
-          this.allProducts = products;
-        });
-  }
+              private productsService: ProductsService,
+              private menu: MenuController ) {
+                this.products = this.productsService.getAllProducts();
+                this.products
+                .subscribe( products => {
+                  // Asignación de todos los productos y ordenados por la fecha de creación.
+                  this.allProducts = products.sort( ( a, b ) => {
+                    if( a.createdAt > b.createdAt ) {
+                      return 1;
+                    } if ( a.createdAt < b.createdAt ) {
+                      return -1;
+                    } else {
+                      return 0;
+                    }
+                  });
+                });
 
+              }
+              
   form: FormGroup = this.formBuilder.group({
-
     name: [ '', [ Validators.required ] ],
     barCode: [ '', [ Validators.required ] ],
     unitPrice: [ 0, [ Validators.required ] ],
     stock: [ 0, [ Validators.required ] ],
     category: [ '', [ Validators.required ] ],
     provider: [ '', [ Validators.required ] ]
-
+    
   });
-
+  
   ngOnInit(): void {
-
+    // Evita que el menú se abra arrastrando
+    this.menu.swipeGesture( false, 'first');
   }
 
+  // Abrir menú
+  onToggleMenu() {
+    this.menu.enable( true, 'first');
+    this.menu.open('first');
+  }
+
+  // Obtener todos los productos.
+  // getAllProducts(): void {
+
+  // }
+
   // Guardar Producto
-  onAdd(): void {
+  onAddProduct(): void {
+
+    const product = this.form.value;
+    product.createdAt = new Date();
+
     this.productsService.addProduct( this.form.value );
     this.form.reset();
   }
@@ -64,6 +93,7 @@ export class ProductsPage implements OnInit {
     this.productsService.deleteProduct( id );
   }
 
+  // Llenar el formulario cuando se da click en el botón de actualizar
   fillFormToUpdate( product: Products ): void {
     // Obtener todos los capmos de la tabla
     const { unitPrice, stock, provider, barCode, category, id, name } = product;
@@ -81,31 +111,19 @@ export class ProductsPage implements OnInit {
     this.isUpdating = true;
   }
 
-  cancel(): void {
+  // Reiniciar el formulario
+  onCancel(): void {
     this.form.reset();
     this.isUpdating = false;
   }
 
   onUpdate() {
 
-    const name = this.form.get('name').value;
-    const barCode = this.form.get('barCode').value;
-    const unitPrice = this.form.get('unitPrice').value;
-    const stock = this.form.get('stock').value;
-    const category = this.form.get('category').value;
-    const provider = this.form.get('provider').value;
-    const id = this.productId;
-    
-    const product = {
-      name,
-      barCode,
-      unitPrice,
-      stock,
-      category,
-      provider,
-      id
-    }
+    // Obtener todos los valores del formulario y agregar la propiedad del id
+    const product = this.form.value;
+    product.id = this.productId;
 
+    // Llamado del servicio para actualizar el producto.
     this.productsService.updateProduct( product );
     this.isUpdating = false;
     this.form.reset();

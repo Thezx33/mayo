@@ -14,5 +14,4 @@ export class HomePage {
     this.menu.enable( true, 'first');
     this.menu.open('first');
   }
-
 }

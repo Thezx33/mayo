@@ -8,28 +8,27 @@ import { Products } from '../interface/products-interface';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductsService {
 
   productsCollection: AngularFirestoreCollection;
   products: Observable<Products[]>;
 
   constructor( private af: AngularFirestore ) {
-
-    // Obtener datos cuando se produzca un cambio ( ingresar, actualizar, eliminar )    
-    this.productsCollection = this.af.collection('products');
-    this.products = this.productsCollection.snapshotChanges()
-                    .pipe(
-                      map(
-                        actions => {
-                          return actions.map( a => {
-                            const data = a.payload.doc.data() as Products;
-                            data.id = a.payload.doc.id;
-                            return data;
-                          }); // actions / map 
-                        } // actions
-                      ) // map 
-                    ) // pipe 
-
+          // Obtener datos cuando se produzca un cambio ( ingresar, actualizar, eliminar )    
+          this.productsCollection = this.af.collection('products');
+          this.products = this.productsCollection.snapshotChanges()
+                          .pipe(
+                            map(
+                              actions => {
+                                return actions.map( a => {
+                                  const data = a.payload.doc.data() as Products;
+                                  data.id = a.payload.doc.id;
+                                  return data;
+                                }); // actions / map 
+                              } // actions
+                            ) // map 
+                          ) // pipe 
   } // constructor
 
   // Añadir producto
@@ -65,7 +64,6 @@ export class ProductsService {
   async updateProduct( product: Products ): Promise<void> {
     try {
       const id = product.id;
-      delete product.id;
       this.af.collection('products').doc( id ).update( product );
     } catch ( err ) {
       console.log("🚀 ~ file: products.service.ts ~ line 68 ~ ProductsService ~ updateProduct ~ err", err)

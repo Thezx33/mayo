@@ -6,4 +6,5 @@ export interface Products {
     stock: number;
     category: string;
     provider: string;
+    createdAt: Date;
 }
