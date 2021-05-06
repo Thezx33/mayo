@@ -19,3 +19,8 @@ form {
         text-decoration: none;
     }
 }
+
+.error {
+    --border-style: none;
+    color: red;
+}

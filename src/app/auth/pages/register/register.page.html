@@ -8,35 +8,71 @@
   <div class="main">
     <form (ngSubmit)="onRegister()" [formGroup]="form">
 
+      <!-- Campo nombre -->
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
 
+      <!-- Mensaje de error nombre -->
+      <ion-item class="error" *ngIf=" campoNoValido( 'name' ) ">
+        <ion-label>{{ nameErrorMsg }}</ion-label>
+      </ion-item>
+
+      <!-- Campo apellido -->
       <ion-item>
         <ion-label position="floating">Apellido(s)</ion-label>
         <ion-input type="text" formControlName="lastName"></ion-input>
       </ion-item>
+
+      <!-- Mensaje de error apellido -->
+      <ion-item class="error" *ngIf=" campoNoValido( 'lastName' ) ">
+        <ion-label>{{ lastNameErrorMsg }}</ion-label>
+      </ion-item>
       
+      <!-- Campo correo -->
       <ion-item>
         <ion-label position="floating">Correo electrónico</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
 
+      <!-- Mensaje de error correo -->
+      <ion-item class="error" *ngIf=" campoNoValido( 'email' ) ">
+        <ion-label>{{ emailErrorMsg }}</ion-label>
+      </ion-item>
+
+      <!-- Campo teléfono -->
       <ion-item>
         <ion-label position="floating">Teléfono</ion-label>
         <ion-input type="tel" formControlName="phone"></ion-input>
       </ion-item>
 
+      <!-- Mensaje de error correo -->
+      <ion-item class="error" *ngIf=" campoNoValido( 'phone' ) ">
+        <ion-label>{{ phoneErrorMsg }}</ion-label>
+      </ion-item>
+
+      <!-- Campo contraseña -->
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item>
 
+      <!-- Mensaje de error password -->
+      <ion-item class="error" *ngIf=" campoNoValido( 'password' ) ">
+        <ion-label>{{ passwordErrorMsg }}</ion-label>
+      </ion-item>
+
+      <!-- Campo confirmar contraseña -->
       <ion-item>
         <ion-label position="floating">Confirmar contraseña</ion-label>
         <ion-input type="password" formControlName="password2"></ion-input>
       </ion-item>
+
+      <ion-item class="error" *ngIf=" campoNoValido( 'password2' ) ">
+        <ion-label>{{ confirmPasswordErrorMsg }}</ion-label>
+      </ion-item>
+      
       
       <div>
         <ion-item class="no-border">
