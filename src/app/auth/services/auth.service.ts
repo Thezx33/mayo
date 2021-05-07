@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { User } from '../interface/user-interface';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { firebaseUser } from '../interface/firebase-user-interface';
+import { Error } from '../interface/error-interface';
+import { AuthErrorsService } from './auth-errors.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,9 @@ export class AuthService {
   user$: Observable<User>;
 
   constructor( 
-    private alertController: AlertController,
     private afa: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router ) {
+    private authErrorsService: AuthErrorsService) {
       this.user$ = this.afa.authState.pipe(
         switchMap( user => {
           if ( user ) {
@@ -45,6 +45,9 @@ export class AuthService {
         return user;
       } catch ( err ) {
         console.log("🚀 ~ file: auth.service.ts ~ line 20 ~ AuthService ~ registerEmailPassword ~ err", err);
+        const error: Error = err;
+        // Llamar al servicio para crear los mensajes de alerta
+        this.authErrorsService.errorAlert( error.code );
       }
     } // Registrar con correo y contraseña
 
@@ -57,6 +60,9 @@ export class AuthService {
         return user;
       } catch ( err ) {
         console.log("🚀 ~ file: auth.service.ts ~ line 52 ~ AuthService ~ loginWithEmailPassword ~ err", err);
+        const error: Error = err;
+        // Llamar al servicio para crear los mensajes de alerta
+        this.authErrorsService.errorAlert( error.code );
       }
     } // Iniciar sesión con correo y contraseña.
 

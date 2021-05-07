@@ -4,7 +4,6 @@ import { ProductsService } from '../../services/products.service';
 import { Observable } from 'rxjs';
 import { Products } from '../../interface/products-interface';
 import { MenuController } from '@ionic/angular';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products',

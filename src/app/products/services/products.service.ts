@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Products } from '../interface/products-interface';
-
+import firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +50,16 @@ export class ProductsService {
 
   }
 
+  async getProductByBarCode( barCode: string ): Promise<Products[]> {
+    try {
+      const product = await this.productsCollection.ref.where( 'barCode', '==', barCode ).get().then( this.returnDocs );
+      // const product = (await this.af.collection('products').ref.where( 'barCode', '==', barCode ).get()).docs[0].data();
+      return product;
+    } catch ( err ) {
+      console.log('🚀 ~ file: products.service.ts ~ line 58 ~ ProductsService ~ getProductByBarCode ~ err', err );
+    }
+  }
+
   // Eliminar producto
   async deleteProduct( id: string ): Promise<void> {
 
@@ -68,5 +78,18 @@ export class ProductsService {
     } catch ( err ) {
       console.log("🚀 ~ file: products.service.ts ~ line 68 ~ ProductsService ~ updateProduct ~ err", err)
     }
+  }
+
+  private returnDocs( snapshot: firebase.firestore.QuerySnapshot ) {
+    const docs: any[] = [];
+
+    snapshot.forEach( snap => {
+      docs.push( {
+        id: snap.id,
+        ...snap.data()
+      });
+    });
+
+    return docs;
   }
 }
